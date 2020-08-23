@@ -52,27 +52,129 @@ def delete3():
 def delete4():
   screen5.destroy()
 
-def login_success():
-  global screen3
-  screen3 = Toplevel(screen)
-  screen3.title("Success!")
-  screen3.geometry("400x300")
-  Label(screen3, text = "Login Success!").pack()
-  Button(screen3, text = "OK", command = delete2).pack()
+def saved():
+  screen8 = Toplevel(screen) 
+  screen8.title("Saved")
+  screen8.geometry("200x200")
+  Label(screen8, text = "Note saved successfully!").pack()
 
+def save():
+  filename = raw_filename.get()
+  notes = raw_notes.get()
+
+  # intentionally no extension set so you wont be able to easily open notes outside of the program
+  data = open(filename, "w")
+  data.write(notes)
+  data.close()
+
+  saved()
+
+def delete_note1():
+  filename3 = raw_filename2.get()
+  # deletes note file
+  os.remove(filename3)
+  screen12 = Toplevel(screen) 
+  screen12.title("Notes")
+  screen12.geometry("400x400")
+  
+  Label(screen12, text = filename3 + " removed").pack()
+
+
+
+def delete_note():
+  global raw_filename2
+  raw_filename2 = StringVar()
+
+  screen11 = Toplevel(screen) 
+  screen11.title("View Notes")
+  screen11.geometry("400x400")
+
+  Label(screen11, text = "Use one of the files below to view notes:").pack()  
+  all_files = os.listdir()
+  Label(screen11, text = all_files).pack()
+  Entry(screen11, textvariable = raw_filename2).pack()
+  Label(screen7, text = "").pack()
+  Button(screen11, command = delete_note1, text = "Ok").pack()
+
+def view_notes1():
+  filename1 = raw_filename1.get()
+  data = open(filename1, "r")
+  data1 = data.read()
+
+  screen10 = Toplevel(screen) 
+  screen10.title("Notes")
+  screen10.geometry("400x400")
+  
+  Label(screen10, text = data1).pack()
+  Label(screen10, text = all_files).pack()
+  
+
+def view_notes():
+  global raw_filename1
+
+  screen9 = Toplevel(screen) 
+  screen9.title("View Notes")
+  screen9.geometry("400x400")
+
+  Label(screen9, text = "Use one of the files below to view notes:").pack()  
+  all_files = os.listdir()
+  Label(screen9, text = all_files).pack()
+  raw_filename1 = StringVar()
+  Entry(screen9, textvariable = raw_filename1).pack()
+  Label(screen9, text = "").pack()
+  Button(screen9, command = view_notes1, text = "Ok").pack()
+
+
+def create_notes():
+  global raw_filename
+  raw_filename = StringVar()
+  global raw_notes
+  raw_notes = StringVar()
+
+  screen7 = Toplevel(screen) 
+  screen7.title("Info")
+  screen7.geometry("400x400")
+  Label(screen7, text = "Please enter a note file name below:").pack()
+  Entry(screen7, textvariable = raw_filename).pack()
+  Label(screen7, text = "").pack()
+  Label(screen7, text = "Please enter your note below:").pack()
+  Entry(screen7, textvariable = raw_notes).pack()
+  Label(screen7, text = "").pack()
+  Button(screen7, text = "Save", command = save).pack()
+  
+
+def session():
+  screen6 = Toplevel(screen) 
+  screen6.title("Dashboard")
+  screen6.geometry("500x400")
+  Label(screen6, text = "Welcome to the main dashboard!").pack()
+  Label(screen6, text = "").pack()
+  Button(screen6, text = "Create Notes", command = create_notes).pack()
+  Label(screen6, text = "").pack()
+  Button(screen6, text = "View Notes", command = view_notes).pack()
+  Label(screen6, text = "").pack()
+  Button(screen6, text = "Delete Note", command = delete_note).pack()
+
+def login_success():
+  session()
+  
 def incorrect_password():
   global screen4
+
   screen4 = Toplevel(screen)
   screen4.title("Denied!")
   screen4.geometry("400x300")
+
   Label(screen4, text = "Password not recognized!").pack()
   Button(screen4, text = "OK", command = delete3).pack()
 
 def user_not_found():
   global screen5
+  
   screen5 = Toplevel(screen)
   screen5.title("Not found!")
   screen5.geometry("400x300")
+  
   Label(screen5, text = "User not found!").pack()
   Button(screen5, text = "OK", command = delete4).pack()
 
@@ -100,12 +202,6 @@ def login_verify():
 
 def login():
   global screen2
-  screen2 = Toplevel(screen)
-  screen2.title("Login")
-  screen2.geometry("400x300")
-  Label(screen2, text = "Please enter login details below").pack()
-  Label(screen2, text = "").pack()
-  
   global username_verify
   global password_verify
   global username_entry1
@@ -113,6 +209,15 @@ def login():
 
   username_verify = StringVar()
   password_verify = StringVar()
+
+  screen2 = Toplevel(screen)
+  screen2.title("Login")
+  screen2.geometry("400x300")
+  
+  Label(screen2, text = "Please enter login details below").pack()
+  Label(screen2, text = "").pack()
+  
+
   
   Label(screen2, text = "Username * ").pack()
   username_entry1 = Entry(screen2, textvariable = username_verify)
